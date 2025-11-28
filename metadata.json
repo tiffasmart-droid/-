@@ -1,0 +1,5 @@
+{
+  "name": "Exam Flashcard Review App",
+  "description": "An application to review multiple-choice exam questions by uploading a JSON file. The app provides a flashcard-style interface for studying, immediate feedback on answers, and a final score summary.",
+  "requestFramePermissions": []
+}
