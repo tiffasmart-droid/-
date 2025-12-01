@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import { type QuizData, type Question } from '../types';
 import { CheckIcon, CrossIcon } from './Icons';
@@ -110,7 +111,7 @@ const QuizScreen: React.FC<QuizScreenProps> = ({ quizData, durationInSeconds, on
   if (questions.length === 0 || !currentQuestion) {
     return (
         <div className="w-full max-w-3xl p-4 md:p-8 bg-white dark:bg-gray-800 rounded-2xl shadow-2xl">
-            <p>正在準備題目...</p>
+            <p>這個單元沒有題目，或是測驗已完成。</p>
         </div>
     );
   }

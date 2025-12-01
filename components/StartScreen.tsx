@@ -1,3 +1,4 @@
+
 import React, { useState, useMemo } from 'react';
 import { type QuizData, type Question } from '../types';
 
@@ -25,9 +26,13 @@ const StartScreen: React.FC<StartScreenProps> = ({ quizData, frequentlyMissedQue
     if (!quizData) return [];
     const tags = new Set<string>();
     quizData.questions.forEach(q => {
-      q.tags?.forEach(tag => tags.add(tag));
+      (q.tags && q.tags.length > 0 ? q.tags : ['未分類']).forEach(tag => tags.add(tag));
     });
-    return Array.from(tags).sort();
+    return Array.from(tags).sort((a,b) => {
+        if (a === '未分類') return 1;
+        if (b === '未分類') return -1;
+        return a.localeCompare(b);
+    });
   }, [quizData]);
 
   const toggleTag = (tag: string) => {
@@ -45,7 +50,7 @@ const StartScreen: React.FC<StartScreenProps> = ({ quizData, frequentlyMissedQue
   const handleStartReview = () => {
     const filteredQuestions = selectedTags.size > 0
       ? quizData.questions.filter(q => 
-          q.tags?.some(tag => selectedTags.has(tag))
+          (q.tags && q.tags.length > 0 ? q.tags : ['未分類']).some(tag => selectedTags.has(tag))
         )
       : quizData.questions;
 
@@ -64,6 +69,7 @@ const StartScreen: React.FC<StartScreenProps> = ({ quizData, frequentlyMissedQue
 
   const handleStartRandomTest = () => {
     const questions = shuffle(quizData.questions).slice(0, 50);
+    setError(null);
     onQuizStart({ ...quizData, questions });
   };
 
@@ -74,7 +80,7 @@ const StartScreen: React.FC<StartScreenProps> = ({ quizData, frequentlyMissedQue
     }
 
     const filtered = quizData.questions.filter(q => 
-      q.tags?.some(tag => selectedTags.has(tag))
+      (q.tags && q.tags.length > 0 ? q.tags : ['未分類']).some(tag => selectedTags.has(tag))
     );
 
     if (filtered.length === 0) {
